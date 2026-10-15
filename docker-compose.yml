@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+# Note: per the spec, we do NOT run a local Postgres container — the
+# database is Supabase-hosted Postgres, reached via DATABASE_URL in .env.
+# The frontend runs separately via `npm run dev` (Next.js dev server
+# doesn't gain much from a container in local dev).

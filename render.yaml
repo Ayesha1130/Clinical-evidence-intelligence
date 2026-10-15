@@ -1,0 +1,45 @@
+# Render Blueprint for the backend API.
+# https://render.com/docs/blueprint-spec
+#
+# Usage: connect this repo in the Render dashboard as a Blueprint, or run
+# `render blueprint launch`. Only the backend is deployed here — the
+# frontend deploys to Vercel (see README "Deployment").
+#
+# Secrets are marked sync: false — Render will prompt for them in the
+# dashboard rather than storing them in this file.
+
+services:
+  - type: web
+    name: clinical-evidence-intelligence-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false # set to your deployed Vercel frontend URL(s), comma-separated
+      - key: DATABASE_URL
+        sync: false # Supabase connection string (Session or Transaction pooler)
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: SUPABASE_JWT_SECRET
+        sync: false
+      - key: LLM_PROVIDER
+        value: openai
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4.1
+      - key: OPENAI_EMBEDDING_MODEL
+        value: text-embedding-3-small
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: NCBI_EMAIL
+        sync: false
+      - key: NCBI_API_KEY
+        sync: false
